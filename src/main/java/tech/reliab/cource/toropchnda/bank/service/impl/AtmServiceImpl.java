@@ -8,6 +8,7 @@ import tech.reliab.cource.toropchnda.bank.entity.Employee;
 import tech.reliab.cource.toropchnda.bank.enums.WorkStatus;
 import tech.reliab.cource.toropchnda.bank.repository.BankAtmRepository;
 import tech.reliab.cource.toropchnda.bank.service.AtmService;
+import tech.reliab.cource.toropchnda.bank.service.BankOfficeService;
 import tech.reliab.cource.toropchnda.bank.service.BankService;
 
 import java.util.Random;
@@ -16,6 +17,7 @@ import java.util.Random;
 public class AtmServiceImpl implements AtmService {
 
     private BankAtmRepository bankAtmRepository;
+    private BankOfficeService bankOfficeService;
     private BankService bankService;
     private static Long idGenerator = 0L;
 
@@ -36,6 +38,8 @@ public class AtmServiceImpl implements AtmService {
                 .moneyAmount(bank.getMoneyAmount())
                 .maintenanceCost(random.nextInt(10000))
                 .build();
+        bankService.addAtm(bank);
+        bankOfficeService.addAtm(office, bankAtm);
         bankAtmRepository.save(bankAtm);
         bankService.addAtm(bank);
 

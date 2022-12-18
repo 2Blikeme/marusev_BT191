@@ -40,8 +40,8 @@ public class Main {
 
         // сервисы
         BankService bankService = new BankServiceImpl(bankRepository);
-        AtmService atmService = new AtmServiceImpl(bankAtmRepository, bankService);
         BankOfficeService bankOfficeService = new BankOfficeServiceImpl(bankOfficeRepository, bankService);
+        AtmService atmService = new AtmServiceImpl(bankAtmRepository, bankOfficeService, bankService);
         EmployeeService employeeService = new EmployeeServiceImpl(employeeRepository, bankService);
         CreditAccountService creditAccountService = new CreditAccountServiceImpl(creditAccountRepository, bankRepository);
         PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl(paymentAccountRepository);

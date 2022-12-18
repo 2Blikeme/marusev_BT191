@@ -2,6 +2,7 @@ package tech.reliab.cource.toropchnda.bank.service.impl;
 
 import lombok.AllArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
+import tech.reliab.cource.toropchnda.bank.entity.BankAtm;
 import tech.reliab.cource.toropchnda.bank.entity.BankOffice;
 import tech.reliab.cource.toropchnda.bank.enums.WorkStatus;
 import tech.reliab.cource.toropchnda.bank.repository.BankOfficeRepository;
@@ -56,5 +57,12 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     public void delete(BankOffice bankOffice) {
         bankOfficeRepository.save(bankOffice);
         bankService.deleteBankOffice(bankOffice.getBank());
+    }
+
+    @Override
+    public void addAtm(BankOffice bankOffice, BankAtm bankAtm) {
+        var atmCount = bankOffice.getAtmCount();
+        bankOffice.setAtmCount(++atmCount);
+        bankOfficeRepository.save(bankOffice);
     }
 }
