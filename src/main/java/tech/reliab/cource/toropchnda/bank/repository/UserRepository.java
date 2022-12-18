@@ -15,7 +15,7 @@ public class UserRepository implements Repository<User> {
     }
 
     public void delete(User entity) {
-        if (Objects.equals(this.entity, entity)) {
+        if (this.entity.equals(entity)) {
             this.entity = null;
         }
     }

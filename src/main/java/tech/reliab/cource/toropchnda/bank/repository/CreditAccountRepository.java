@@ -15,7 +15,7 @@ public class CreditAccountRepository implements Repository<CreditAccount> {
     }
 
     public void delete(CreditAccount entity) {
-        if (Objects.equals(this.entity, entity)) {
+        if (this.entity.equals(entity)) {
             this.entity = null;
         }
     }

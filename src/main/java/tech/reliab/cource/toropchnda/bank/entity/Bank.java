@@ -1,14 +1,9 @@
 package tech.reliab.cource.toropchnda.bank.entity;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-
-@Getter
-@Setter
-@ToString
+@Data
 @Builder
 public class Bank {
     private Long id;
@@ -19,6 +14,6 @@ public class Bank {
     private Integer clientCount;
     private Integer rate;
     private Long moneyAmount;
-    private Integer interestRate;
+    private Double interestRate;
 }
 

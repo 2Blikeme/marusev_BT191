@@ -1,21 +1,20 @@
 package tech.reliab.cource.toropchnda.bank.entity;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
+import tech.reliab.cource.toropchnda.bank.enums.BankPost;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 public class Employee {
     private Long id;
     private String fullName;
-    private Date birthday;
-    private String post;
+    private LocalDate birthday;
+    private BankPost post;
     private Bank bank;
     private Boolean remotely;
     private BankOffice office;

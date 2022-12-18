@@ -15,12 +15,9 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     private BankOfficeRepository bankOfficeRepository;
     private BankService bankService;
-
     private static Long idGenerator = 0L;
 
-    /**
-     * Создает офис, увеличивает количество офисов в банке
-     */
+
     @Override
     public BankOffice create(String name, String address, Bank bank) {
         Random random = new Random();

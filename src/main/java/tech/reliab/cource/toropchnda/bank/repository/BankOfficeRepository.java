@@ -15,7 +15,7 @@ public class BankOfficeRepository implements Repository<BankOffice> {
     }
 
     public void delete(BankOffice entity) {
-        if (Objects.equals(this.entity, entity)) {
+        if (this.entity.equals(entity)) {
             this.entity = null;
         }
     }

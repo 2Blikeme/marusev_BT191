@@ -15,7 +15,7 @@ public class PaymentAccountRepository implements Repository<PaymentAccount> {
     }
 
     public void delete(PaymentAccount entity) {
-        if (Objects.equals(this.entity, entity)) {
+        if (this.entity.equals(entity)) {
             this.entity = null;
         }
     }

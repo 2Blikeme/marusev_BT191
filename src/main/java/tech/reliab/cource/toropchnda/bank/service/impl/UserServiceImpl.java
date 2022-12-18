@@ -2,8 +2,6 @@ package tech.reliab.cource.toropchnda.bank.service.impl;
 
 import lombok.AllArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
-import tech.reliab.cource.toropchnda.bank.entity.CreditAccount;
-import tech.reliab.cource.toropchnda.bank.entity.PaymentAccount;
 import tech.reliab.cource.toropchnda.bank.entity.User;
 import tech.reliab.cource.toropchnda.bank.repository.EmployeeRepository;
 import tech.reliab.cource.toropchnda.bank.repository.UserRepository;
@@ -11,10 +9,10 @@ import tech.reliab.cource.toropchnda.bank.service.BankService;
 import tech.reliab.cource.toropchnda.bank.service.CreditAccountService;
 import tech.reliab.cource.toropchnda.bank.service.PaymentAccountService;
 import tech.reliab.cource.toropchnda.bank.service.UserService;
+import tech.reliab.cource.toropchnda.bank.utils.CreditCalculator;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @AllArgsConstructor
@@ -38,7 +36,7 @@ public class UserServiceImpl implements UserService {
                 .builder()
                 .id(idGenerator++)
                 .fullName(fullName)
-                .birthday(Date.from(Instant.now()))
+                .birthday(LocalDate.now().minusYears(random.nextLong(20, 50)))
                 .workPlace(workPlace)
                 .income(userIncome)
                 .banks(bank)
@@ -52,10 +50,17 @@ public class UserServiceImpl implements UserService {
 
         // TODO: 11.10.2022 вынести это в отдельный метод, когда будем брать кредит
         var employee = employeeRepository.getEntity();
+
+        var creditBegin = LocalDate.now();
+        var creditEnd = LocalDate.now().plusMonths(random.nextLong(12, 25));
+        var creditAmount = random.nextLong(10_000, 1_000_000L);
+
         var creditAccount = creditAccountService
                 .create(user, bank.getName(),
-                        LocalDate.now(), LocalDate.now(),
-                        100_000L, 1000L,
+                        creditBegin, creditEnd,
+                        creditAmount,
+                        CreditCalculator
+                                .calcMonthPayment(creditBegin, creditEnd, creditAmount, bank.getInterestRate()),
                         employee, paymentAccount);
         user.setPaymentAccounts(paymentAccount);
         user.setCreditAccounts(creditAccount);

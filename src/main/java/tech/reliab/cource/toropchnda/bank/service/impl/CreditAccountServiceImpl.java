@@ -11,22 +11,19 @@ import tech.reliab.cource.toropchnda.bank.service.CreditAccountService;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
-import java.util.Date;
 
 @AllArgsConstructor
 public class CreditAccountServiceImpl implements CreditAccountService {
 
     private CreditAccountRepository creditAccountRepository;
     private BankRepository bankRepository;
-
     private static Long idGenerator = 0L;
+
 
     @Override
     public CreditAccount create(User user, String bankName,
                                 LocalDate creditBegin, LocalDate creditEnd,
-                                Long creditAmount, Long mouthPayment,
+                                Long creditAmount, Double mouthPayment,
                                 Employee employee, PaymentAccount paymentAccount) {
         var bank = bankRepository.getByName(bankName);
         var account = CreditAccount

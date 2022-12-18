@@ -20,9 +20,6 @@ public class AtmServiceImpl implements AtmService {
     private static Long idGenerator = 0L;
 
 
-    /**
-     * Создает банкомат, увеличивает количество банкоматов в bank
-     */
     @Override
     public BankAtm create(String name, Bank bank, BankOffice office, Employee employee) {
         Random random = new Random();

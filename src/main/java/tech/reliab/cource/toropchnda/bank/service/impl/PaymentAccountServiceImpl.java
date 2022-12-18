@@ -12,8 +12,8 @@ import java.util.Random;
 public class PaymentAccountServiceImpl implements PaymentAccountService {
 
     private PaymentAccountRepository paymentAccountRepository;
-
     private static Long idGenerator = 0L;
+
 
     @Override
     public PaymentAccount create(User user, String bankName) {

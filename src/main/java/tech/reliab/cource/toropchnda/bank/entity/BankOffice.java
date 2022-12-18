@@ -1,15 +1,11 @@
 package tech.reliab.cource.toropchnda.bank.entity;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import tech.reliab.cource.toropchnda.bank.enums.WorkStatus;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 public class BankOffice {
     private Long id;
     private String name;

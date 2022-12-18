@@ -15,7 +15,7 @@ public class EmployeeRepository implements Repository<Employee> {
     }
 
     public void delete(Employee entity) {
-        if (Objects.equals(this.entity, entity)) {
+        if (this.entity.equals(entity)) {
             this.entity = null;
         }
     }

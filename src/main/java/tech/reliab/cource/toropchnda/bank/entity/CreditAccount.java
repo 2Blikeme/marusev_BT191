@@ -1,16 +1,13 @@
 package tech.reliab.cource.toropchnda.bank.entity;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 public class CreditAccount {
     private Long id;
     private User user;
@@ -19,9 +16,9 @@ public class CreditAccount {
     private LocalDate creditEnd;
     private Integer creditMonthCount;
     private Long creditAmount;
-    private Long monthPayment;
-    private Integer interestRate;
+    private Double monthPayment;
+    private Double interestRate;
+    @ToString.Exclude
     private Employee creditor;
     private PaymentAccount paymentAccount;
-
 }

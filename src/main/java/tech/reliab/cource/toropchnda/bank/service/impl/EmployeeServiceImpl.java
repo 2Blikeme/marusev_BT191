@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
 import tech.reliab.cource.toropchnda.bank.entity.BankOffice;
 import tech.reliab.cource.toropchnda.bank.entity.Employee;
+import tech.reliab.cource.toropchnda.bank.enums.BankPost;
 import tech.reliab.cource.toropchnda.bank.repository.EmployeeRepository;
 import tech.reliab.cource.toropchnda.bank.service.BankService;
 import tech.reliab.cource.toropchnda.bank.service.EmployeeService;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @AllArgsConstructor
@@ -17,26 +18,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private BankService bankService;
-
     private static Long idGenerator = 0L;
 
-    /**
-     * Создает сотрудника банка, увеличивает число сотрудников в банке
-     */
+
     @Override
-    public Employee create(String fullName, String post, Bank bank, BankOffice office) {
+    public Employee create(String fullName, BankPost post, Bank bank, BankOffice office) {
         Random random = new Random();
         var employee = Employee
                 .builder()
                 .id(idGenerator++)
                 .fullName(fullName)
-                .birthday(Date.from(Instant.now()))
+                .birthday(LocalDate.now().minusYears(random.nextLong(20, 50)))
                 .post(post)
                 .bank(bank)
                 .remotely(random.nextBoolean())
                 .office(office)
-                .creditAvailable(random.nextBoolean())
-                .salary(random.nextInt(100_000))
+                .creditAvailable(post == BankPost.CREDITOR && random.nextBoolean())
+                .salary(random.nextInt(15000, 50000))
                 .build();
         employeeRepository.save(employee);
         bankService.addEmployee(bank);

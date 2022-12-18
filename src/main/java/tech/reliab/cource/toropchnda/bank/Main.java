@@ -1,5 +1,6 @@
 package tech.reliab.cource.toropchnda.bank;
 
+import tech.reliab.cource.toropchnda.bank.enums.BankPost;
 import tech.reliab.cource.toropchnda.bank.repository.BankAtmRepository;
 import tech.reliab.cource.toropchnda.bank.repository.BankOfficeRepository;
 import tech.reliab.cource.toropchnda.bank.repository.BankRepository;
@@ -23,6 +24,9 @@ import tech.reliab.cource.toropchnda.bank.service.impl.PaymentAccountServiceImpl
 import tech.reliab.cource.toropchnda.bank.service.impl.UserServiceImpl;
 
 public class Main {
+
+    private final static String separator =
+            "-----------------------------------------------------------------------------------------------";
 
     public static void main(String[] args) {
         // репозитории
@@ -52,7 +56,8 @@ public class Main {
         var bankOffice = bankOfficeService.create("Офис 1", "Адрес 1, улица 1, дом 1", bank);
 
         // создаем работника
-        var employee = employeeService.create("Иванов Иван Иванович", "Охранник", bank, bankOffice);
+        var employee = employeeService.create("Иванов Иван Иванович",
+                BankPost.getRandomPost(), bank, bankOffice);
 
         // создаем банкомат
         var atm = atmService.create("Банкомат 1", bank, bankOffice, employee);
@@ -63,12 +68,20 @@ public class Main {
         var creditAccount = creditAccountRepository.getEntity();
         var paymentAccount = paymentAccountRepository.getEntity();
 
+        System.out.println(separator);
         System.out.println(bank);
+        System.out.println(separator);
         System.out.println(bankOffice);
+        System.out.println(separator);
         System.out.println(employee);
+        System.out.println(separator);
         System.out.println(atm);
+        System.out.println(separator);
         System.out.println(user);
+        System.out.println(separator);
         System.out.println(creditAccount);
+        System.out.println(separator);
         System.out.println(paymentAccount);
+        System.out.println(separator);
     }
 }

@@ -15,7 +15,7 @@ public class BankRepository implements Repository<Bank> {
     }
 
     public void delete(Bank entity) {
-        if (Objects.equals(this.entity, entity)) {
+        if (this.entity.equals(entity)) {
             this.entity = null;
         }
     }

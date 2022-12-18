@@ -9,12 +9,11 @@ import java.util.Random;
 
 @AllArgsConstructor
 public class BankServiceImpl implements BankService {
+
     private final BankRepository bankRepository;
     private static Long idGenerator = 0L;
 
-    /**
-     * создает банк
-     */
+
     @Override
     public Bank createBank(String name) {
         Random random = new Random();
@@ -29,7 +28,7 @@ public class BankServiceImpl implements BankService {
                 .clientCount(0)
                 .rate(rate)
                 .moneyAmount(random.nextLong(1_000_000L))
-                .interestRate((int) (20 - rate / 10D))
+                .interestRate(20 - rate / 10D)
                 .build();
         bankRepository.save(bank);
 
@@ -52,8 +51,6 @@ public class BankServiceImpl implements BankService {
         bankRepository.delete(bank);
     }
 
-    //------------------------------------------------------------
-    // какая-то логика добавления/удаления сущностей
 
     @Override
     public void addAtm(Bank bank) {

@@ -7,7 +7,7 @@ public enum WorkStatus {
     NOT_WORKING("Не работает"),
     NO_MONEY("Нет денег");
 
-    private String name;
+    private final String name;
     private static final Random random = new Random();
 
     WorkStatus(String name) {
@@ -17,5 +17,10 @@ public enum WorkStatus {
     public static WorkStatus getRandomStatus() {
         var values = values();
         return values[random.nextInt(values.length)];
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
