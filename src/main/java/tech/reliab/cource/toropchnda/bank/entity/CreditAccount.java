@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Builder
 public class CreditAccount {
     private Long id;
+    @ToString.Exclude
     private User user;
     private String bankName;
     private LocalDate creditStart;
@@ -20,5 +21,6 @@ public class CreditAccount {
     private Double interestRate;
     @ToString.Exclude
     private Employee creditor;
+    @ToString.Exclude
     private PaymentAccount paymentAccount;
 }

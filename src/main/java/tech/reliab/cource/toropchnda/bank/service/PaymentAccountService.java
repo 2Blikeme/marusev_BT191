@@ -12,10 +12,6 @@ public interface PaymentAccountService {
      */
     PaymentAccount create(User user, String bankName);
 
-    /**
-     * Возвращает платежный аккаунт
-     */
-    PaymentAccount getPaymentAccount();
 
     /**
      * Возвращает платежный аккаунт

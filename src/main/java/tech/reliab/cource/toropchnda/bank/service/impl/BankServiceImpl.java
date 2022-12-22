@@ -35,10 +35,6 @@ public class BankServiceImpl implements BankService {
         return bank;
     }
 
-    @Override
-    public Bank getBank() {
-        return bankRepository.getEntity();
-    }
 
     @Override
     public void update(Bank bank) {

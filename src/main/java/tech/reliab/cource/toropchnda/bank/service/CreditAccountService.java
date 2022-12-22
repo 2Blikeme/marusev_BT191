@@ -25,10 +25,6 @@ public interface CreditAccountService {
                          Long creditAmount, Double mouthPayment,
                          Employee employee, PaymentAccount paymentAccount);
 
-    /**
-     * Возвращает кредитный аккаунт
-     */
-    CreditAccount getCreditAccount();
 
     /**
      * Обновляет кредитный аккаунт

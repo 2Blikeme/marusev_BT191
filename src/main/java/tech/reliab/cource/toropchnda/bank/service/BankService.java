@@ -10,10 +10,6 @@ public interface BankService {
      */
     Bank createBank(String name);
 
-    /**
-     * Возвращает банк
-     */
-    Bank getBank();
 
     /**
      * Обновляет банк

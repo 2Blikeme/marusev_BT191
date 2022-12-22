@@ -25,7 +25,9 @@ public class CreditAccountServiceImpl implements CreditAccountService {
                                 LocalDate creditBegin, LocalDate creditEnd,
                                 Long creditAmount, Double mouthPayment,
                                 Employee employee, PaymentAccount paymentAccount) {
+
         var bank = bankRepository.getByName(bankName);
+
         var account = CreditAccount
                 .builder()
                 .id(idGenerator++)
@@ -45,10 +47,6 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         return account;
     }
 
-    @Override
-    public CreditAccount getCreditAccount() {
-        return creditAccountRepository.getEntity();
-    }
 
     @Override
     public void update(CreditAccount creditAccount) {

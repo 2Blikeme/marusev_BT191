@@ -1,26 +1,29 @@
 package tech.reliab.cource.toropchnda.bank.repository;
 
-import lombok.Getter;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
 public class BankRepository implements Repository<Bank> {
 
-    private Bank entity;
+    private final List<Bank> entities = new ArrayList<>();
 
     public void save(Bank entity) {
-        this.entity = entity;
+        // т.к. ссылка уже находится в массиве,
+        // то там уже все изменилось, поэтому не имеет смысла пересохранять
+        if (entities.contains(entity)) { return; }
+        this.entities.add(entity);
     }
 
     public void delete(Bank entity) {
-        if (this.entity.equals(entity)) {
-            this.entity = null;
-        }
+        this.entities.removeIf(el -> el.equals(entity));
     }
 
     public Bank getByName(String name) {
-        return entity.getName().equals(name) ? entity : null;
+        return entities
+                .stream()
+                .filter(bank -> bank.getName().equals(name))
+                .findAny().orElseThrow();
     }
 }

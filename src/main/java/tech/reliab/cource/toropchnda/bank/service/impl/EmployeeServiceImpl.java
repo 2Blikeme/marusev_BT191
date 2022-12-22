@@ -42,10 +42,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
-    @Override
-    public Employee getEmployee() {
-        return employeeRepository.getEntity();
-    }
 
     @Override
     public void update(Employee employee) {

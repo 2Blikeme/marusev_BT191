@@ -18,6 +18,5 @@ public class BankOffice {
     private Boolean introduction;
     private Long moneyAmount;
     private Integer rentCost;
-
     private Bank bank;
 }

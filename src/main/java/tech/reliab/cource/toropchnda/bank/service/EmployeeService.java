@@ -16,10 +16,6 @@ public interface EmployeeService {
      */
     Employee create(String fullName, BankPost post, Bank bank, BankOffice office);
 
-    /**
-     * Возвращает сотрудника
-     */
-    Employee getEmployee();
 
     /**
      * Обновляет сотрудника

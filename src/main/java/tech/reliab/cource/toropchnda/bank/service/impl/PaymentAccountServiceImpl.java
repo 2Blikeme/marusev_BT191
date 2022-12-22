@@ -30,10 +30,6 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         return account;
     }
 
-    @Override
-    public PaymentAccount getPaymentAccount() {
-        return paymentAccountRepository.getEntity();
-    }
 
     @Override
     public void update(PaymentAccount paymentAccount) {

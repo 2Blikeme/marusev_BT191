@@ -6,7 +6,6 @@ import lombok.ToString;
 import tech.reliab.cource.toropchnda.bank.enums.BankPost;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,8 +14,10 @@ public class Employee {
     private String fullName;
     private LocalDate birthday;
     private BankPost post;
+    @ToString.Exclude
     private Bank bank;
     private Boolean remotely;
+    @ToString.Exclude
     private BankOffice office;
     private Boolean creditAvailable;
     private Integer salary;

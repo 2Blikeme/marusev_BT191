@@ -44,11 +44,6 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
     @Override
-    public BankOffice getBankOffice() {
-        return bankOfficeRepository.getEntity();
-    }
-
-    @Override
     public void update(BankOffice bankOffice) {
         bankOfficeRepository.save(bankOffice);
     }

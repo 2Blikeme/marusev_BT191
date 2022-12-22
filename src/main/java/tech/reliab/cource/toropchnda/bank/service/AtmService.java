@@ -16,10 +16,6 @@ public interface AtmService {
      */
     BankAtm create(String name, Bank bank, BankOffice office, Employee employee);
 
-    /**
-     * Возвращает банкомат
-     */
-    BankAtm getBankAtm();
 
     /**
      * Удаляет банкомат

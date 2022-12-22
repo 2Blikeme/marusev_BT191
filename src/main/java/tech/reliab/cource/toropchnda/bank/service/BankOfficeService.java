@@ -15,12 +15,7 @@ public interface BankOfficeService {
     BankOffice create(String name, String address, Bank bank);
 
     /**
-     * Возвращает офис
-     */
-    BankOffice getBankOffice();
-
-    /**
-     * Обновляет офис
+     * Обновляет банк
      */
     void update(BankOffice bankOffice);
 

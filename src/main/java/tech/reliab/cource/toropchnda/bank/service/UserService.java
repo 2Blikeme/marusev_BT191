@@ -13,10 +13,6 @@ public interface UserService {
      */
     User create(String fullName, String workPlace, Bank bank);
 
-    /**
-     * Возвращает пользователя
-     */
-    User getUser();
 
     /**
      * Обновляет пользователя

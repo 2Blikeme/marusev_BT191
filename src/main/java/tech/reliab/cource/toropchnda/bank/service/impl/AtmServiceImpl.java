@@ -36,7 +36,7 @@ public class AtmServiceImpl implements AtmService {
                 .extradition(random.nextBoolean())
                 .introduction(random.nextBoolean())
                 .moneyAmount(bank.getMoneyAmount())
-                .maintenanceCost(random.nextInt(10000))
+                .maintenanceCost(random.nextInt(10_000))
                 .build();
         bankService.addAtm(bank);
         bankOfficeService.addAtm(office, bankAtm);
@@ -46,10 +46,6 @@ public class AtmServiceImpl implements AtmService {
         return bankAtm;
     }
 
-    @Override
-    public BankAtm getBankAtm() {
-        return bankAtmRepository.getEntity();
-    }
 
     @Override
     public void delete(BankAtm bankAtm) {

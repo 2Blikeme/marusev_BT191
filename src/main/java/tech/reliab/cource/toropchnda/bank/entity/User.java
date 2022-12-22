@@ -3,9 +3,10 @@ package tech.reliab.cource.toropchnda.bank.entity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -15,14 +16,18 @@ public class User {
     private LocalDate birthday;
     private String workPlace;
     private Integer income;
-    //------------------------------------
-    // TODO: 08.10.2022 сделать списком
-    private Bank banks;
     @ToString.Exclude
-    private CreditAccount creditAccounts;
+    private List<Bank> banks;
     @ToString.Exclude
-    private PaymentAccount paymentAccounts;
-    //-------------------------------------
+    private List<CreditAccount> creditAccounts;
+    @ToString.Exclude
+    private List<PaymentAccount> paymentAccounts;
     private Integer rate;
 
+    public void printUserInfo() {
+        System.out.println("Клиент: \n" + this);
+        System.out.println("Кредитные счета: \n" + ModelProvider.creditAccountRepository.findAllByUser(this));
+        System.out.println("Платежные счета: \n" + ModelProvider.paymentAccountRepository.findAllByUser(this));
+        System.out.println("Клиент: \n" + this);
+    }
 }
