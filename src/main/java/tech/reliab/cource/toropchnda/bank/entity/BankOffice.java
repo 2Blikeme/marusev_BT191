@@ -19,4 +19,15 @@ public class BankOffice {
     private Long moneyAmount;
     private Integer rentCost;
     private Bank bank;
+
+    @Override
+    public String toString() {
+        return "BankOffice{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", status=" + status +
+                ", creditAvailable=" + creditAvailable +
+                '}';
+    }
 }

@@ -36,7 +36,7 @@ public class AtmServiceImpl implements AtmService {
                 .extradition(random.nextBoolean())
                 .introduction(random.nextBoolean())
                 .moneyAmount(bank.getMoneyAmount())
-                .maintenanceCost(random.nextInt(10_000))
+                .maintenanceCost(random.nextInt(30_000, 500_000))
                 .build();
         bankService.addAtm(bank);
         bankOfficeService.addAtm(office, bankAtm);

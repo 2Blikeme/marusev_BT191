@@ -1,5 +1,6 @@
 package tech.reliab.cource.toropchnda.bank.repository;
 
+import tech.reliab.cource.toropchnda.bank.entity.Bank;
 import tech.reliab.cource.toropchnda.bank.entity.PaymentAccount;
 import tech.reliab.cource.toropchnda.bank.entity.User;
 
@@ -27,5 +28,14 @@ public class PaymentAccountRepository implements Repository<PaymentAccount> {
                 .stream()
                 .filter(paymentAccount -> paymentAccount.getUser().equals(user))
                 .collect(Collectors.toList());
+    }
+
+    public PaymentAccount getPaymentAccountByBankAndUser(Bank bank, User user) {
+        return entities.stream()
+                .filter(paymentAccount ->
+                        paymentAccount.getUser().equals(user) &&
+                                paymentAccount.getBank().equals(bank.getName()))
+                .findFirst()
+                .orElse(null);
     }
 }

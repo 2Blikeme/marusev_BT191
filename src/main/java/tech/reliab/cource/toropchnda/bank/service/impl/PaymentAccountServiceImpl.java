@@ -26,6 +26,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
                 .moneyAmount(random.nextInt(100_000))
                 .build();
         paymentAccountRepository.save(account);
+        user.getPaymentAccounts().add(account);
 
         return account;
     }

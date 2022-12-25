@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
                        Bank bank) {
 
         Random random = new Random();
-        var userIncome = random.nextInt(10_000);
+        var userIncome = random.nextInt(30_000, 100_000);
         var user = User
                 .builder()
                 .id(idGenerator++)

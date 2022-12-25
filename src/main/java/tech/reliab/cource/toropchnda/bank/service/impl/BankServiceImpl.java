@@ -2,9 +2,12 @@ package tech.reliab.cource.toropchnda.bank.service.impl;
 
 import lombok.AllArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
+import tech.reliab.cource.toropchnda.bank.entity.BankAtm;
 import tech.reliab.cource.toropchnda.bank.repository.BankRepository;
 import tech.reliab.cource.toropchnda.bank.service.BankService;
+import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
+import java.util.List;
 import java.util.Random;
 
 @AllArgsConstructor
@@ -27,7 +30,7 @@ public class BankServiceImpl implements BankService {
                 .employeeCount(0)
                 .clientCount(0)
                 .rate(rate)
-                .moneyAmount(random.nextLong(1_000_000L))
+                .moneyAmount(random.nextLong(500_000,1_000_000L))
                 .interestRate(20 - rate / 10D)
                 .build();
         bankRepository.save(bank);
@@ -102,5 +105,36 @@ public class BankServiceImpl implements BankService {
         var clientCount = bank.getClientCount();
         bank.setClientCount(--clientCount);
         this.update(bank);
+    }
+
+    @Override
+    public Bank getBestBank() {
+        var banks = ModelProvider.bankRepository.findAll();
+        Bank bestBank = banks.get(0);
+        for (Bank bank : banks) {
+            if (bestBank.getAtmCount() < bank.getAtmCount() &&
+                    bestBank.getEmployeeCount() < bank.getEmployeeCount()) {
+                if (bestBank.getOfficeCount() < bank.getOfficeCount()) {
+                    bestBank = bank;
+                } else if (bestBank.getInterestRate() < bank.getInterestRate()) {
+                    bestBank = bank;
+                }
+            }
+        }
+        return bestBank;
+    }
+
+    @Override
+    public List<BankAtm> getAtmsToExtraditeCredit(Bank bank, Long creditAmount) {
+        var offices = ModelProvider.bankOfficeRepository.findAllByBank(bank);
+        return offices
+                .stream()
+                .map(bankOffice ->
+                        ModelProvider.bankAtmRepository
+                                .getAllByOfficeLocationAndWorksAndMoneyContains(bankOffice, creditAmount)
+                )
+                .findFirst()
+                .orElse(null);
+
     }
 }

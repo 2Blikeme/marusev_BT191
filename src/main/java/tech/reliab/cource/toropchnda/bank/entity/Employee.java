@@ -21,4 +21,14 @@ public class Employee {
     private BankOffice office;
     private Boolean creditAvailable;
     private Integer salary;
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", post=" + post +
+                ", creditAvailable=" + creditAvailable +
+                '}';
+    }
 }

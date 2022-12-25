@@ -28,4 +28,11 @@ public class EmployeeRepository implements Repository<Employee> {
                 .filter(employee -> employee.getBank().equals(bank))
                 .collect(Collectors.toList());
     }
+
+    public List<Employee> findAllCreditAvailableByBank(Bank bank) {
+        return entities.stream().filter(employee ->
+                employee.getBank().equals(bank) &&
+                        employee.getCreditAvailable())
+                .collect(Collectors.toList());
+    }
 }

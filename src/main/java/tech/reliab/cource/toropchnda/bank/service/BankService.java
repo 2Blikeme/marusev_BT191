@@ -1,6 +1,10 @@
 package tech.reliab.cource.toropchnda.bank.service;
 
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
+import tech.reliab.cource.toropchnda.bank.entity.BankAtm;
+import tech.reliab.cource.toropchnda.bank.entity.BankOffice;
+
+import java.util.List;
 
 public interface BankService {
 
@@ -20,6 +24,16 @@ public interface BankService {
      * Удаляет банк
      */
     void delete(Bank bank);
+
+    /**
+     * Возвращает 'лучший' банк
+     */
+    Bank getBestBank();
+
+    /**
+     *  Возвращает банкоматы банка которые могут выдать данную сумму
+     */
+    List<BankAtm> getAtmsToExtraditeCredit(Bank bank, Long creditAmount);
 
     //------------------------------------------------------------
     // какая-то логика добавления/удаления сущностей

@@ -8,8 +8,11 @@ import tech.reliab.cource.toropchnda.bank.enums.WorkStatus;
 import tech.reliab.cource.toropchnda.bank.repository.BankOfficeRepository;
 import tech.reliab.cource.toropchnda.bank.service.BankOfficeService;
 import tech.reliab.cource.toropchnda.bank.service.BankService;
+import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class BankOfficeServiceImpl implements BankOfficeService {
@@ -59,5 +62,13 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         var atmCount = bankOffice.getAtmCount();
         bankOffice.setAtmCount(++atmCount);
         bankOfficeRepository.save(bankOffice);
+    }
+
+    @Override
+    public List<BankOffice> getAllWorksOffices(Bank bank) {
+        var offices = ModelProvider.bankOfficeRepository.findAllByBank(bank);
+        return offices.stream().filter(bankOffice ->
+                bankOffice.getStatus().equals(WorkStatus.WORKING) && bankOffice.getCreditAvailable())
+                .collect(Collectors.toList());
     }
 }

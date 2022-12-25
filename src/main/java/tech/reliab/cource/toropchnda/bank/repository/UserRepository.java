@@ -5,6 +5,7 @@ import tech.reliab.cource.toropchnda.bank.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserRepository implements Repository<User> {
@@ -16,6 +17,14 @@ public class UserRepository implements Repository<User> {
         // то там уже все изменилось, поэтому не имеет смысла пересохранять
         if (entities.contains(entity)) { return; }
         this.entities.add(entity);
+    }
+
+    public Optional<User> findById(Long id) {
+        return entities.stream().filter(user -> user.getId().equals(id)).findFirst();
+    }
+
+    public List<User> findAll() {
+        return entities;
     }
 
     public void delete(User entity) {

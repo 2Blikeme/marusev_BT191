@@ -30,4 +30,14 @@ public class User {
         System.out.println("Платежные счета: \n" + ModelProvider.paymentAccountRepository.findAllByUser(this));
         System.out.println("Клиент: \n" + this);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", income=" + income +
+                ", rate=" + rate +
+                '}';
+    }
 }

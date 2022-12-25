@@ -17,24 +17,24 @@ public class DataGenerator {
         List<Employee> bankEmployeeList = new ArrayList<>();
 
         // создаем банки, офисы и сотрудников для них
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
 
             // создаем банк
             var bank = ModelProvider.bankService.createBank("Банк " + i);
 
             // для банка создаем офисы банка
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 10; j++) {
                 var bankOffice = ModelProvider.bankOfficeService.create("Офис " + (i + j),
                         String.format("Адрес %s, улица %s, дом %s", (i + j), (i + j), (i + j)), bank);
 
                 // создаем сотрудников
-                for (int k = 0; k < 5; k++) {
+                for (int k = 0; k < 15; k++) {
                     bankEmployeeList.add(ModelProvider.employeeService.create(DataProvider.getRandomName(),
                             BankPost.getRandomPost(), bank, bankOffice));
                 }
 
                 // создаем банкоматы для офиса банка
-                for (int k = 0; k < 3; k++) {
+                for (int k = 0; k < 10; k++) {
                     ModelProvider.atmService.create(
                             "Банкомат " + k,
                             bank,
@@ -44,7 +44,7 @@ public class DataGenerator {
                 }
 
                 // создаем клиентов
-                for (int k = 0; k < 5; k++) {
+                for (int k = 0; k < 2; k++) {
                     var user = ModelProvider.userService.create(
                             DataProvider.getRandomName(),
                             DataProvider.getRandomWorkSpace(),
@@ -60,7 +60,7 @@ public class DataGenerator {
                         var creditEnd = LocalDate.now().plusMonths(random.nextLong(12, 25));
                         var creditAmount = random.nextLong(10_000, 1_000_000L);
 
-                        var creditAccount = ModelProvider.creditAccountService
+                        ModelProvider.creditAccountService
                                 .create(user, bank.getName(),
                                         creditBegin, creditEnd,
                                         creditAmount,
@@ -68,8 +68,9 @@ public class DataGenerator {
                                                 .calcMonthPayment(creditBegin, creditEnd, creditAmount,
                                                         bank.getInterestRate()),
                                         bankEmployeeList.get(random.nextInt(5)), paymentAccount);
-                        user.getPaymentAccounts().add(paymentAccount);
-                        user.getCreditAccounts().add(creditAccount);
+
+//                        user.getPaymentAccounts().add(paymentAccount);
+//                        user.getCreditAccounts().add(creditAccount);
                     }
                 }
                 bankEmployeeList.clear();

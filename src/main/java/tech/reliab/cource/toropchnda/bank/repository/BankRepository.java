@@ -20,6 +20,10 @@ public class BankRepository implements Repository<Bank> {
         this.entities.removeIf(el -> el.equals(entity));
     }
 
+    public List<Bank> findAll() {
+        return entities;
+    }
+
     public Bank getByName(String name) {
         return entities
                 .stream()

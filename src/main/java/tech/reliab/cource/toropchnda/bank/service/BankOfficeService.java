@@ -4,6 +4,8 @@ import tech.reliab.cource.toropchnda.bank.entity.Bank;
 import tech.reliab.cource.toropchnda.bank.entity.BankAtm;
 import tech.reliab.cource.toropchnda.bank.entity.BankOffice;
 
+import java.util.List;
+
 public interface BankOfficeService {
 
     /**
@@ -28,4 +30,9 @@ public interface BankOfficeService {
      * Добавляет банкомат в офис
      */
     void addAtm(BankOffice office, BankAtm bankAtm);
+
+    /**
+     * Возвращает все работающие офисы банка выдающие кредит
+     */
+    List<BankOffice> getAllWorksOffices(Bank bank);
 }

@@ -22,6 +22,14 @@ public class BankOfficeRepository implements Repository<BankOffice> {
         this.entities.removeIf(el -> el.equals(entity));
     }
 
+    public List<BankOffice> findAll() {
+        return entities;
+    }
+
+    public BankOffice findById(Long id) {
+        return entities.stream().filter(office -> office.getId().equals(id)).findFirst().orElse(null);
+    }
+
     public List<BankOffice> findAllByBank(Bank bank) {
         return entities
                 .stream()

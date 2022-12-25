@@ -23,4 +23,17 @@ public class CreditAccount {
     private Employee creditor;
     @ToString.Exclude
     private PaymentAccount paymentAccount;
+
+    @Override
+    public String toString() {
+        return "CreditAccount{" +
+                "id=" + id +
+                ", bankName='" + bankName + '\'' +
+                ", creditStart=" + creditStart +
+                ", creditEnd=" + creditEnd +
+                ", creditMonthCount=" + creditMonthCount +
+                ", creditAmount=" + creditAmount +
+                ", monthPayment=" + monthPayment +
+                '}';
+    }
 }

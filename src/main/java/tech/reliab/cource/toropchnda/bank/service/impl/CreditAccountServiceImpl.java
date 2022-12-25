@@ -43,6 +43,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
                 .paymentAccount(paymentAccount)
                 .build();
         creditAccountRepository.save(account);
+        user.getCreditAccounts().add(account);
 
         return account;
     }
