@@ -5,7 +5,6 @@ import tech.reliab.cource.toropchnda.bank.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserRepository implements Repository<User> {
@@ -19,8 +18,8 @@ public class UserRepository implements Repository<User> {
         this.entities.add(entity);
     }
 
-    public Optional<User> findById(Long id) {
-        return entities.stream().filter(user -> user.getId().equals(id)).findFirst();
+    public User findById(Long id) {
+        return entities.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(null);
     }
 
     public List<User> findAll() {

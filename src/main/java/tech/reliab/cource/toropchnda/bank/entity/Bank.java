@@ -1,11 +1,15 @@
 package tech.reliab.cource.toropchnda.bank.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Bank {
     private Long id;
     private String name;

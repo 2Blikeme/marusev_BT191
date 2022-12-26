@@ -69,6 +69,6 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         var offices = ModelProvider.bankOfficeRepository.findAllByBank(bank);
         return offices.stream().filter(bankOffice ->
                 bankOffice.getStatus().equals(WorkStatus.WORKING) && bankOffice.getCreditAvailable())
-                .collect(Collectors.toList());
+                .toList();
     }
 }

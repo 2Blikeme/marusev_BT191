@@ -8,10 +8,15 @@ import tech.reliab.cource.toropchnda.bank.service.BankService;
 import tech.reliab.cource.toropchnda.bank.service.CreditAccountService;
 import tech.reliab.cource.toropchnda.bank.service.PaymentAccountService;
 import tech.reliab.cource.toropchnda.bank.service.UserService;
+import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static tech.reliab.cource.toropchnda.bank.utils.FileJsonUtil.objectMapper;
 
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -61,5 +66,58 @@ public class UserServiceImpl implements UserService {
         user.getPaymentAccounts().forEach(paymentAccount -> paymentAccountService.delete(paymentAccount));
         user.getBanks().forEach(bank -> bankService.deleteClient(bank));
         userRepository.delete(user);
+    }
+
+    @Override
+    public void outputCreditAccountsToJson(User user, String fileName) throws IOException {
+        var creditAccountsJsonString = objectMapper.writeValueAsString(user.getCreditAccounts());
+        FileWriter creditAccountsJsonFile = new FileWriter(fileName);
+        creditAccountsJsonFile.write(creditAccountsJsonString);
+        creditAccountsJsonFile.close();
+    }
+
+    @Override
+    public void outputPaymentAccountsToJson(User user, String fileName) throws IOException {
+        var paymentAccountsJsonString = objectMapper.writeValueAsString(user.getPaymentAccounts());
+        FileWriter paymentAccountsJsonFile = new FileWriter(fileName);
+        paymentAccountsJsonFile.write(paymentAccountsJsonString);
+        paymentAccountsJsonFile.close();
+    }
+
+    @Override
+    public boolean transferAccountsToAnotherBank(User user, Bank oldBank, Bank newBank) throws IOException {
+        var usersPaymentsAccounts = user.getPaymentAccounts()
+                .stream()
+                .filter(paymentAccount -> paymentAccount.getBank().equals(oldBank.getName()))
+                .toList();
+        var usersCreditAccounts = user.getCreditAccounts()
+                .stream()
+                .filter(creditAccount -> creditAccount.getBankName().equals(oldBank.getName()))
+                .toList();
+
+        var paymentAccountsJsonFileName = "payment.json";
+        var creditAccountsJsonFileName = "credit.json";
+
+        try (FileWriter paymentAccountsJsonFile = new FileWriter(paymentAccountsJsonFileName);
+             FileWriter creditAccountsJsonFile = new FileWriter(creditAccountsJsonFileName);
+        ) {
+            paymentAccountsJsonFile.write(objectMapper.writeValueAsString(usersPaymentsAccounts));
+            creditAccountsJsonFile.write(objectMapper.writeValueAsString(usersCreditAccounts));
+        }
+
+        outputPaymentAccountsToJson(user, paymentAccountsJsonFileName);
+        outputCreditAccountsToJson(user, creditAccountsJsonFileName);
+
+        try {
+            ModelProvider.creditAccountRepository.delete(usersCreditAccounts);
+            ModelProvider.paymentAccountRepository.delete(usersPaymentsAccounts);
+
+            bankService.transferUsersPaymentAccounts(user, newBank, paymentAccountsJsonFileName);
+            bankService.transferUsersCreditAccounts(user, newBank, creditAccountsJsonFileName);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

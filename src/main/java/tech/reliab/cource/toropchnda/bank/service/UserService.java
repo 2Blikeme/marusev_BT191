@@ -3,6 +3,8 @@ package tech.reliab.cource.toropchnda.bank.service;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
 import tech.reliab.cource.toropchnda.bank.entity.User;
 
+import java.io.IOException;
+
 public interface UserService {
 
     /**
@@ -24,4 +26,19 @@ public interface UserService {
      */
     void delete(User user);
 
+
+    /**
+     * Создает json кредитных аккаунтов пользователя
+     */
+    void outputCreditAccountsToJson(User user, String fileName) throws IOException;
+
+    /**
+     * Создает json платежных аккаунтов пользователя
+     */
+    void outputPaymentAccountsToJson(User user, String fileName) throws IOException;
+
+    /**
+     * Переводит все счета пользователя из старого банка в новый
+     */
+    boolean transferAccountsToAnotherBank(User user, Bank oldBank, Bank newBank) throws IOException;
 }

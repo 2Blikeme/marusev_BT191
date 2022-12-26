@@ -11,6 +11,7 @@ import tech.reliab.cource.toropchnda.bank.utils.CreditCalculator;
 import tech.reliab.cource.toropchnda.bank.utils.DataGenerator;
 import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.Scanner;
@@ -21,34 +22,67 @@ public class Main {
     private static final Random random = new Random();
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         DataGenerator generator = new DataGenerator();
         generator.generateData();
 
-        var users = ModelProvider.userRepository.findAll();
-        users.forEach(System.out::println);
+        var user = ModelProvider.userRepository.findById(0L);
+        transferAccounts(user);
 
-        try {
-            System.out.print("Введите ваш id: ");
-            var userId = scanner.nextLong();
-            var user = ModelProvider.userRepository.findById(userId).orElse(null);
-            if (user == null) {
-                System.out.println("Такой пользователь не найден");
-            } else {
-                System.out.print("Какую сумму вы хотите взять? ");
-                var creditAmount = scanner.nextLong();
-                if (creditAmount < 10000) {
-                    throw new CreditAmountException("Ну это не серьезно, сумма слишком маленькая, идите в микрозаймы.");
-                } else if (creditAmount > 1_000_000_00){
-                    throw new CreditAmountException("Ого О_о, мы не можем вам столько дать.");
-                } else {
-                    getCredit(user, creditAmount);
-                }
-            }
-        } catch (RuntimeException e) {
-            System.out.println("Что-то пошло не так! Причина: " + e.getMessage());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+//        ModelProvider.userService.outputAccountsToJson(user);
+
+
+
+//        var users = ModelProvider.userRepository.findAll();
+//        users.forEach(System.out::println);
+//
+//        try {
+//            System.out.print("Введите ваш id: ");
+//            var userId = scanner.nextLong();
+//            var user = ModelProvider.userRepository.findById(userId).orElse(null);
+//            if (user == null) {
+//                System.out.println("Такой пользователь не найден");
+//            } else {
+//                System.out.print("Какую сумму вы хотите взять? ");
+//                var creditAmount = scanner.nextLong();
+//                if (creditAmount < 10000) {
+//                    throw new CreditAmountException("Ну это не серьезно, сумма слишком маленькая, идите в микрозаймы.");
+//                } else if (creditAmount > 1_000_000_00){
+//                    throw new CreditAmountException("Ого О_о, мы не можем вам столько дать.");
+//                } else {
+//                    getCredit(user, creditAmount);
+//                }
+//            }
+//        } catch (RuntimeException e) {
+//            System.out.println("Что-то пошло не так! Причина: " + e.getMessage());
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+    }
+
+    private static void transferAccounts(User user) throws IOException {
+        user.printUserInfo();
+        System.out.println();
+        ModelProvider.bankRepository.findAll().forEach(System.out::println);
+
+        System.out.print("Введите id банка из которого вы хотите перевести счета: ");
+        var oldBankId = scanner.nextLong();
+        var oldBank = ModelProvider.bankRepository.findById(oldBankId);
+        if (oldBank == null) {
+            throw new BankException("Такого банка нет");
+        }
+
+        System.out.print("Введите id банка в который вы хотите перевести счета: ");
+        var newBankId = scanner.nextLong();
+        var newBank = ModelProvider.bankRepository.findById(newBankId);
+        if (newBank == null) {
+            throw new BankException("Такого банка нет");
+        }
+
+        if (ModelProvider.userService.transferAccountsToAnotherBank(user, oldBank, newBank)) {
+            user.printUserInfo();
+        } else {
+            System.out.println("Что-то пошло не так");
         }
     }
 

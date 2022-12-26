@@ -19,6 +19,10 @@ public class PaymentAccountRepository implements Repository<PaymentAccount> {
         this.entities.add(entity);
     }
 
+    public void save(List<PaymentAccount> accounts) {
+        this.entities.addAll(accounts);
+    }
+
     public void delete(PaymentAccount entity) {
         this.entities.removeIf(el -> el.equals(entity));
     }
@@ -37,5 +41,9 @@ public class PaymentAccountRepository implements Repository<PaymentAccount> {
                                 paymentAccount.getBank().equals(bank.getName()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void delete(List<PaymentAccount> accounts) {
+        entities.removeAll(accounts);
     }
 }

@@ -1,7 +1,9 @@
 package tech.reliab.cource.toropchnda.bank.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import tech.reliab.cource.toropchnda.bank.enums.BankPost;
 
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee {
     private Long id;
     private String fullName;

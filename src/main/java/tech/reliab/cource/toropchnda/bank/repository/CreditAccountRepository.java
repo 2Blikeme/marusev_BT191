@@ -18,6 +18,10 @@ public class CreditAccountRepository implements Repository<CreditAccount> {
         this.entities.add(entity);
     }
 
+    public void save(List<CreditAccount> accounts) {
+        this.entities.addAll(accounts);
+    }
+
     public void delete(CreditAccount entity) {
         this.entities.removeIf(el -> el.equals(entity));
     }
@@ -27,5 +31,9 @@ public class CreditAccountRepository implements Repository<CreditAccount> {
                 .stream()
                 .filter(creditAccount -> creditAccount.getUser().equals(user))
                 .collect(Collectors.toList());
+    }
+
+    public void delete(List<CreditAccount> accounts) {
+        entities.removeAll(accounts);
     }
 }

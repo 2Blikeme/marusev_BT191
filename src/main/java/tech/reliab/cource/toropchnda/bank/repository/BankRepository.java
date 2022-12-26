@@ -24,6 +24,10 @@ public class BankRepository implements Repository<Bank> {
         return entities;
     }
 
+    public Bank findById(Long id) {
+        return entities.stream().filter(bank -> bank.getId().equals(id)).findFirst().orElse(null);
+    }
+
     public Bank getByName(String name) {
         return entities
                 .stream()

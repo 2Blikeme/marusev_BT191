@@ -28,7 +28,6 @@ public class User {
         System.out.println("Клиент: \n" + this);
         System.out.println("Кредитные счета: \n" + ModelProvider.creditAccountRepository.findAllByUser(this));
         System.out.println("Платежные счета: \n" + ModelProvider.paymentAccountRepository.findAllByUser(this));
-        System.out.println("Клиент: \n" + this);
     }
 
     @Override
