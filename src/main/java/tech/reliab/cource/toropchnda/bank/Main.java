@@ -82,7 +82,7 @@ public class Main {
         } while (office == null || office.getMoneyAmount() < creditAmount);
 
         // выбираем сотрудника
-        var employees = ModelProvider.employeeRepository.findAllCreditAvailableByBank(bank);
+        var employees = ModelProvider.employeeRepository.findAllCreditAvailableByOffice(office);
         if (employees.isEmpty()) {
             throw new EmployeeException("Нет сотрудников, которые могут выдать кредит");
         }
@@ -102,7 +102,7 @@ public class Main {
         System.out.println("Вы выбрали сотрудника, смотрим есть ли у вас счет у нас в банке");
         Thread.sleep(3000);
         var paymentAccount = ModelProvider.paymentAccountRepository.getPaymentAccountByBankAndUser(bank, user);
-        if (paymentAccount == null) {
+        if (paymentAccount != null) {
             System.out.println("Круто! У вас есть счет, идем дальше");
         } else {
             System.out.println("Ой-ой-ой! Счет не найден. Заводим его");

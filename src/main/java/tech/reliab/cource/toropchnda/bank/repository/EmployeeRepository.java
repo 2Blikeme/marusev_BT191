@@ -1,6 +1,7 @@
 package tech.reliab.cource.toropchnda.bank.repository;
 
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
+import tech.reliab.cource.toropchnda.bank.entity.BankOffice;
 import tech.reliab.cource.toropchnda.bank.entity.Employee;
 
 import java.util.ArrayList;
@@ -29,10 +30,11 @@ public class EmployeeRepository implements Repository<Employee> {
                 .collect(Collectors.toList());
     }
 
-    public List<Employee> findAllCreditAvailableByBank(Bank bank) {
-        return entities.stream().filter(employee ->
-                employee.getBank().equals(bank) &&
-                        employee.getCreditAvailable())
+    public List<Employee> findAllCreditAvailableByOffice(BankOffice office) {
+        return entities.stream()
+                .filter(employee ->
+                    employee.getOffice().equals(office) && employee.getCreditAvailable()
+                )
                 .collect(Collectors.toList());
     }
 }
