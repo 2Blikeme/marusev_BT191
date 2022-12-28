@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import tech.reliab.cource.toropchnda.bank.enums.BankPost;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Employee {
+public class Employee implements Serializable {
     private Long id;
     private String fullName;
     private LocalDate birthday;

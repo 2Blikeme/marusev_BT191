@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Bank {
+public class Bank implements Serializable {
     private Long id;
     private String name;
     private Integer officeCount;

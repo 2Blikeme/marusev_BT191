@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.enums.WorkStatus;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankOffice {
+public class BankOffice implements Serializable {
     private Long id;
     private String name;
     private String address;

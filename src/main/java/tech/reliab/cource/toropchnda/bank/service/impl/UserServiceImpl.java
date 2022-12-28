@@ -3,6 +3,7 @@ package tech.reliab.cource.toropchnda.bank.service.impl;
 import lombok.AllArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
 import tech.reliab.cource.toropchnda.bank.entity.User;
+import tech.reliab.cource.toropchnda.bank.model.UserAccountsModel;
 import tech.reliab.cource.toropchnda.bank.repository.UserRepository;
 import tech.reliab.cource.toropchnda.bank.service.BankService;
 import tech.reliab.cource.toropchnda.bank.service.CreditAccountService;
@@ -10,13 +11,14 @@ import tech.reliab.cource.toropchnda.bank.service.PaymentAccountService;
 import tech.reliab.cource.toropchnda.bank.service.UserService;
 import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static tech.reliab.cource.toropchnda.bank.utils.FileJsonUtil.objectMapper;
 
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -69,55 +71,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void outputCreditAccountsToJson(User user, String fileName) throws IOException {
-        var creditAccountsJsonString = objectMapper.writeValueAsString(user.getCreditAccounts());
-        FileWriter creditAccountsJsonFile = new FileWriter(fileName);
-        creditAccountsJsonFile.write(creditAccountsJsonString);
-        creditAccountsJsonFile.close();
-    }
-
-    @Override
-    public void outputPaymentAccountsToJson(User user, String fileName) throws IOException {
-        var paymentAccountsJsonString = objectMapper.writeValueAsString(user.getPaymentAccounts());
-        FileWriter paymentAccountsJsonFile = new FileWriter(fileName);
-        paymentAccountsJsonFile.write(paymentAccountsJsonString);
-        paymentAccountsJsonFile.close();
-    }
-
-    @Override
     public boolean transferAccountsToAnotherBank(User user, Bank oldBank, Bank newBank) throws IOException {
-        var usersPaymentsAccounts = user.getPaymentAccounts()
-                .stream()
-                .filter(paymentAccount -> paymentAccount.getBank().equals(oldBank.getName()))
-                .toList();
-        var usersCreditAccounts = user.getCreditAccounts()
-                .stream()
-                .filter(creditAccount -> creditAccount.getBankName().equals(oldBank.getName()))
-                .toList();
+        String fileName = user.getId() + ".txt";
+        var usersAccounts = this.saveAllUsersAccountsByBankInFile(user, oldBank, fileName);
 
-        var paymentAccountsJsonFileName = "payment.json";
-        var creditAccountsJsonFileName = "credit.json";
+        try (FileInputStream fileInputStream = new FileInputStream(fileName)) {
 
-        try (FileWriter paymentAccountsJsonFile = new FileWriter(paymentAccountsJsonFileName);
-             FileWriter creditAccountsJsonFile = new FileWriter(creditAccountsJsonFileName);
-        ) {
-            paymentAccountsJsonFile.write(objectMapper.writeValueAsString(usersPaymentsAccounts));
-            creditAccountsJsonFile.write(objectMapper.writeValueAsString(usersCreditAccounts));
-        }
+            ModelProvider.creditAccountRepository.delete(usersAccounts.getCreditAccount());
+            ModelProvider.paymentAccountRepository.delete(usersAccounts.getPaymentAccounts());
+            bankService.getTransferUsersAccounts(user, newBank, fileInputStream);
 
-        outputPaymentAccountsToJson(user, paymentAccountsJsonFileName);
-        outputCreditAccountsToJson(user, creditAccountsJsonFileName);
-
-        try {
-            ModelProvider.creditAccountRepository.delete(usersCreditAccounts);
-            ModelProvider.paymentAccountRepository.delete(usersPaymentsAccounts);
-
-            bankService.transferUsersPaymentAccounts(user, newBank, paymentAccountsJsonFileName);
-            bankService.transferUsersCreditAccounts(user, newBank, creditAccountsJsonFileName);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return false;
         }
         return true;
+    }
+
+    @Override
+    public UserAccountsModel saveAllUsersAccountsByBankInFile(User user, Bank bank, String fileName) throws IOException {
+        var usersPaymentsAccounts = user.getPaymentAccounts()
+                .stream()
+                .filter(paymentAccount -> paymentAccount.getBank().equals(bank.getName()))
+                .toList();
+        var usersCreditAccounts = user.getCreditAccounts()
+                .stream()
+                .filter(creditAccount -> creditAccount.getBankName().equals(bank.getName()))
+                .toList();
+
+        UserAccountsModel model = new UserAccountsModel();
+        model.setCreditAccount(usersCreditAccounts);
+        model.setPaymentAccounts(usersPaymentsAccounts);
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);) {
+            objectOutputStream.writeObject(model);
+        }
+        return model;
     }
 }

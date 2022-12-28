@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.ToString;
 import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Builder
-public class User {
+public class User implements Serializable {
     private Long id;
     private String fullName;
     private LocalDate birthday;

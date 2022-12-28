@@ -1,19 +1,17 @@
 package tech.reliab.cource.toropchnda.bank.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
 import tech.reliab.cource.toropchnda.bank.entity.Bank;
 import tech.reliab.cource.toropchnda.bank.entity.BankAtm;
-import tech.reliab.cource.toropchnda.bank.entity.CreditAccount;
-import tech.reliab.cource.toropchnda.bank.entity.PaymentAccount;
 import tech.reliab.cource.toropchnda.bank.entity.User;
+import tech.reliab.cource.toropchnda.bank.model.UserAccountsModel;
 import tech.reliab.cource.toropchnda.bank.repository.BankRepository;
 import tech.reliab.cource.toropchnda.bank.service.BankService;
-import tech.reliab.cource.toropchnda.bank.utils.FileJsonUtil;
 import tech.reliab.cource.toropchnda.bank.utils.ModelProvider;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Random;
 
@@ -146,33 +144,38 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public boolean transferUsersCreditAccounts(User user, Bank bank, String filename) throws IOException {
-        File file = new File(filename);
-        List<CreditAccount> creditAccounts = FileJsonUtil.objectMapper.readValue(file, new TypeReference<>(){});
-        creditAccounts.forEach(creditAccount -> {
-            creditAccount.setBankName(bank.getName());
-            creditAccount.setId(idGenerator++);
-            creditAccount.setUser(user);
-            creditAccount.getPaymentAccount().setBank(bank.getName());
-            var newEmployeeList = ModelProvider.employeeRepository.findAllCreditAvailableByBank(bank);
-            creditAccount.setCreditor(newEmployeeList.get(0));
-        });
-        ModelProvider.creditAccountRepository.save(creditAccounts);
-        user.setCreditAccounts(creditAccounts);
+    public boolean getTransferUsersAccounts(User user, Bank bank, FileInputStream fileInputStream) throws IOException {
+        try(ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);) {
+            UserAccountsModel model = (UserAccountsModel) objectInputStream.readObject();
+            var creditAccounts = model.getCreditAccount();
+            var paymentAccounts = model.getPaymentAccounts();
+
+            // обновляем инфу по счетам для нового банка
+            // имитация ставки "уникального" id чтобы не было дубликатов в бд,
+            // на самом деле не будет работать,
+            // потому что это вообще счетчик для банков, но id все равно обновлять нужно
+            // или ставить null и при сохранении бд сама поставит id
+            creditAccounts.forEach(creditAccount -> {
+                creditAccount.setUser(user);
+                creditAccount.setBankName(bank.getName());
+                // ставим для него любого сотрудника банка
+                creditAccount.setCreditor(ModelProvider.employeeRepository.findAllCreditAvailableByBank(bank).get(0));
+                creditAccount.setId(idGenerator++);
+            });
+
+            paymentAccounts.forEach(paymentAccount -> {
+                paymentAccount.setBank(bank.getName());
+                paymentAccount.setUser(user);
+                paymentAccount.setId(idGenerator++);
+            });
+
+            ModelProvider.creditAccountRepository.save(creditAccounts);
+            ModelProvider.paymentAccountRepository.save(paymentAccounts);
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         return true;
     }
 
-    @Override
-    public boolean transferUsersPaymentAccounts(User user, Bank bank, String filename) throws IOException {
-        File file = new File(filename);
-        List<PaymentAccount> paymentAccounts = FileJsonUtil.objectMapper.readValue(file, new TypeReference<>(){});
-        paymentAccounts.forEach(paymentAccount -> {
-            paymentAccount.setUser(user);
-            paymentAccount.setId(idGenerator++);
-            paymentAccount.setBank(bank.getName());
-        });
-        ModelProvider.paymentAccountRepository.save(paymentAccounts);
-        user.setPaymentAccounts(paymentAccounts);
-        return false;
-    }
 }

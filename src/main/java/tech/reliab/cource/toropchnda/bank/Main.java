@@ -80,7 +80,9 @@ public class Main {
         }
 
         if (ModelProvider.userService.transferAccountsToAnotherBank(user, oldBank, newBank)) {
+            System.out.println("Мы перевели ваши аккаунты в другой банк. Ура!");
             user.printUserInfo();
+
         } else {
             System.out.println("Что-то пошло не так");
         }

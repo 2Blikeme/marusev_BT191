@@ -4,6 +4,7 @@ import tech.reliab.cource.toropchnda.bank.entity.Bank;
 import tech.reliab.cource.toropchnda.bank.entity.BankAtm;
 import tech.reliab.cource.toropchnda.bank.entity.User;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,17 +38,9 @@ public interface BankService {
     List<BankAtm> getAtmsToExtraditeCredit(Bank bank, Long creditAmount);
 
     /**
-     * Переводит все кредитные счета пользователя в банк из файла filename
+     * Переводит все счета пользователя в банк
      */
-    boolean transferUsersCreditAccounts(User user, Bank bank, String filename) throws IOException;
-
-    /**
-     * Переводит все платедные счета пользователя в банк из файла filename
-     */
-    boolean transferUsersPaymentAccounts(User user, Bank bank, String filename) throws IOException;
-
-
-
+    boolean getTransferUsersAccounts(User user, Bank bank, FileInputStream fileInputStream) throws IOException;
 
 
     //------------------------------------------------------------

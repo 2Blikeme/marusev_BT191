@@ -1,22 +1,21 @@
 package tech.reliab.cource.toropchnda.bank.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditAccount {
+public class CreditAccount implements Serializable {
     private Long id;
     @ToString.Exclude
-    @JsonIgnore
     private User user;
     private String bankName;
     private LocalDate creditStart;
